@@ -3,7 +3,7 @@ promoted = false
 projectName = ""
 repository = "ikolomiyets/demo-policy"
 tag = "latest"
-namespace = "kube-demo"
+namespace = "demo"
 image = ""
 
 podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins-sa',
