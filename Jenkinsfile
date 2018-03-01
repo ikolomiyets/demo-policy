@@ -16,7 +16,7 @@ podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
     containerTemplate(name: 'sonarqube', image: 'iktech/sonarqube-scanner', ttyEnabled: true, command: 'cat'),
   ],
   volumes: [
-    secretVolume(mountPath: '/etc/.secret', secretName: 'ssh-home'),
+    secretVolume(mountPath: '/etc/.ssh', secretName: 'ssh-home'),
     secretVolume(mountPath: '/opt/sonar-scanner/conf', secretName: 'sonar-scanner.properties'),
     secretVolume(secretName: 'docker-hub-credentials', mountPath: '/etc/.secret'),
     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
@@ -31,7 +31,7 @@ podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
             image="${repository}:${version}.${env.BUILD_NUMBER}"
 
             // Set up private key to access BitBucket
-            sh "cat /etc/.secret/id_rsa > ~/.ssh/id_rsa"
+            sh "cat /etc/.ssh/id_rsa > ~/.ssh/id_rsa"
             sh "chmod 400 ~/.ssh/id_rsa"
         }
 
@@ -96,7 +96,6 @@ podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
         stage('Build Docker Image') {
             container('docker') {
                 sh "docker build --build-arg VERSION=${version}.${env.BUILD_NUMBER} -t ${image} ."
-                input 'Stop!'
                 sh 'cat /etc/.secret/password | docker login --password-stdin --username $DOCKER_USERNAME'
                 sh "docker push ${image}"
                 sh "docker tag ${image} ${repository}:${tag}"
