@@ -96,7 +96,6 @@ podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
         stage('Build Docker Image') {
             container('docker') {
                 sh "docker build --build-arg VERSION=${version}.${env.BUILD_NUMBER} -t ${image} ."
-                input 'Stop'
                 sh 'cat /etc/.secret/password | docker login --password-stdin --username $DOCKER_USERNAME'
                 sh "docker push ${image}"
                 sh "docker tag ${image} ${repository}:${tag}"
