@@ -18,7 +18,7 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins-sa',
   volumes: [
     secretVolume(mountPath: '/etc/.ssh', secretName: 'ssh-home'),
     secretVolume(mountPath: '/opt/sonar-scanner/conf', secretName: 'sonar-scanner.properties'),
-    secretVolume(secretName: 'docker-hub-credentials', mountPath: '/etc/.secret'),
+    secretVolume(secretName: 'ikolomiyets-docker-hub-credentials', mountPath: '/etc/.secret'),
     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
   ]
 ) {
