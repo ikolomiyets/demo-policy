@@ -1,6 +1,10 @@
 version = ""
 promoted = false
 projectName = ""
+repository = "ikolomiyets/demo-policy"
+tag = "latest"
+namespace = "kube-demo"
+image = ""
 
 podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
   containers: [
@@ -22,6 +26,7 @@ podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
             props = readProperties file: 'gradle.properties'
             version = props['baseVersion']
             projectName = props['projectName']
+            image="${repository}:${version}.${env.BUILD_NUMBER}"
 
             // Set up private key to access BitBucket
             sh "cat /etc/.secret/id_rsa > ~/.ssh/id_rsa"
