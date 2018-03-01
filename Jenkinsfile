@@ -31,7 +31,6 @@ podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
         stage('Build Java Code') {
             container('java') {
                 try {
-                    sh 'mkdir -p /root/.gradle; cat /etc/.gradle/gradle.properties > /root/.gradle/gradle.properties'
                     sh './gradlew clean build'
                 } catch (error) {
                     step([$class: 'Mailer',
