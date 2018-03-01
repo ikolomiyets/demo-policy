@@ -40,8 +40,8 @@ podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
                         sendToIndividuals: true])
                     throw error
                 } finally {
-                    step([$class: 'JUnitResultArchiver', testResults: 'build/test-results/**/*.xml'])
-                    step([$class: 'JacocoPublisher'])
+//                    step([$class: 'JUnitResultArchiver', testResults: 'build/test-results/**/*.xml'])
+//                    step([$class: 'JacocoPublisher'])
                 }
             }
         }
