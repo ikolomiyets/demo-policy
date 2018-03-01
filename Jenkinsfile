@@ -6,7 +6,7 @@ tag = "latest"
 namespace = "kube-demo"
 image = ""
 
-podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
+podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins-sa',
   containers: [
     containerTemplate(name: 'java', image: 'openjdk:alpine', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'docker', image: 'docker:dind', ttyEnabled: true, command: 'cat', privileged: true,
