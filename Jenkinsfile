@@ -17,7 +17,8 @@ podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
   ],
   volumes: [
     secretVolume(mountPath: '/etc/.secret', secretName: 'ssh-home'),
-    secretVolume(mountPath: '/opt/sonar-scanner/conf', secretName: 'sonar-scanner.properties')
+    secretVolume(mountPath: '/opt/sonar-scanner/conf', secretName: 'sonar-scanner.properties'),
+    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
   ]
 ) {
     node('jpod') {
