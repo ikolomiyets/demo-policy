@@ -13,7 +13,6 @@ podTemplate(label: 'jpod', cloud: 'kubernetes', serviceAccount: 'jenkins',
   ],
   volumes: [
     secretVolume(mountPath: '/etc/.secret', secretName: 'ssh-home'),
-    secretVolume(mountPath: '/etc/.gradle', secretName: 'gradle.properties'),
     secretVolume(mountPath: '/opt/sonar-scanner/conf', secretName: 'sonar-scanner.properties')
   ]
 ) {
