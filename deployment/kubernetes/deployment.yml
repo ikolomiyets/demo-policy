@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  namespace: kube-demo
+  name: demo-policy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demo-policy
+        type: deployment
+    spec:
+      containers:
+        - name: demo-policy
+          image: "ikolomiyets/demo-policy"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+
