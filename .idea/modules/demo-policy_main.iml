@@ -28,6 +28,7 @@
     <orderEntry type="library" name="Gradle: org.slf4j:jul-to-slf4j:1.7.25" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:log4j-over-slf4j:1.7.25" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Gradle: com.microsoft.azure:applicationinsights-web:2.0.2" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:1.5.7.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-validator:5.3.5.Final" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.10" level="project" />
@@ -35,6 +36,7 @@
     <orderEntry type="library" name="Gradle: org.springframework:spring-web:4.3.11.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:1.5.7.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot:1.5.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: com.microsoft.azure:applicationinsights-core:2.0.2" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context:4.3.11.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-aop:4.3.11.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-beans:4.3.11.RELEASE" level="project" />

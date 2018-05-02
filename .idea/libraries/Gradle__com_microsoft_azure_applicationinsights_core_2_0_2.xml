@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.microsoft.azure:applicationinsights-core:2.0.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microsoft.azure/applicationinsights-core/2.0.2/1f73797b7c92211abc2f80a7a05a0aa326ca99b0/applicationinsights-core-2.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.microsoft.azure/applicationinsights-core/2.0.2/2eecdbcfbfabb3b0d1d8f7e16f30637612424e0b/applicationinsights-core-2.0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
