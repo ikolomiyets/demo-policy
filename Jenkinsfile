@@ -58,7 +58,7 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins-sa',
             		stage('SonarQube Analysis') {
             	        try {
             			    def scannerHome = tool 'sonarqube-scanner';
-            				withSonarQubeEnv('DevOps SonarQube') {
+            				withSonarQubeEnv('Sonarqube') {
             			        sh "${scannerHome}/bin/sonar-scanner"
             			    }
             	        } catch (error) {
