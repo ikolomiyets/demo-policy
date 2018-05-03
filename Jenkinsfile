@@ -17,7 +17,6 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins-sa',
   ],
   volumes: [
     secretVolume(mountPath: '/etc/.ssh', secretName: 'ssh-home'),
-    secretVolume(mountPath: '/opt/sonar-scanner/conf', secretName: 'sonar-scanner.properties'),
     secretVolume(secretName: 'ikolomiyets-docker-hub-credentials', mountPath: '/etc/.secret'),
     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
   ]
@@ -53,45 +52,45 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins-sa',
             }
         }
 
-//        stage('SonarQube Analysis') {
-//            container('sonarqube') {
-//            	lock(resource: "${projectName}-sonarqube") {
-//            		stage('SonarQube Analysis') {
-//            	        try {
-//            			    def scannerHome = tool 'sonarqube-scanner';
-//            				withSonarQubeEnv('DevOps SonarQube') {
-//            			        sh "${scannerHome}/bin/sonar-scanner"
-//            			    }
-//            	        } catch (error) {
-//                            step([$class: 'Mailer',
-//                                notifyEveryUnstableBuild: true,
-//                                recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
-//                                                                [$class: 'RequesterRecipientProvider']]),
-//                                sendToIndividuals: true])
-//            	            throw error
-//            	        }
-//            		}
-//            	}
-//            }
-//        }
+        stage('SonarQube Analysis') {
+            container('sonarqube') {
+            	lock(resource: "${projectName}-sonarqube") {
+            		stage('SonarQube Analysis') {
+            	        try {
+            			    def scannerHome = tool 'sonarqube-scanner';
+            				withSonarQubeEnv('DevOps SonarQube') {
+            			        sh "${scannerHome}/bin/sonar-scanner"
+            			    }
+            	        } catch (error) {
+                            step([$class: 'Mailer',
+                                notifyEveryUnstableBuild: true,
+                                recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
+                                                                [$class: 'RequesterRecipientProvider']]),
+                                sendToIndividuals: true])
+            	            throw error
+            	        }
+            		}
+            	}
+            }
+        }
 
-//        stage("Quality Gate") {
-//	          milestone(1)
-//	          lock(resource: "${projectName}-sonarqube") {
-//                  timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
-//                    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-//                    if (qg.status != 'OK') {
-//                        step([$class: 'Mailer',
-//                            notifyEveryUnstableBuild: true,
-//                            recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
-//                                                            [$class: 'RequesterRecipientProvider']]),
-//                            sendToIndividuals: true])
-//                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-//                    }
-//                  }
-//		          milestone(2)
-//             }
-//        }
+        stage("Quality Gate") {
+	          milestone(1)
+	          lock(resource: "${projectName}-sonarqube") {
+                  timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+                    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                    if (qg.status != 'OK') {
+                        step([$class: 'Mailer',
+                            notifyEveryUnstableBuild: true,
+                            recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
+                                                            [$class: 'RequesterRecipientProvider']]),
+                            sendToIndividuals: true])
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    }
+                  }
+		          milestone(2)
+             }
+        }
 
         stage('Build Docker Image') {
             container('docker') {
