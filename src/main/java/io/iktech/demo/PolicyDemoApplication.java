@@ -38,7 +38,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         WebClientAutoConfiguration.class,
         WebMvcAutoConfiguration.class,
         WebSocketAutoConfiguration.class,
-        WebServicesAutoConfiguration.class
+        WebServicesAutoConfiguration.class,
+        AppInsightsConfig.class
 })
 @ComponentScan({"io.iktech.demo"})
 public class PolicyDemoApplication {
