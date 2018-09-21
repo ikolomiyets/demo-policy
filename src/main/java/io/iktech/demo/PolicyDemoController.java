@@ -2,10 +2,7 @@ package io.iktech.demo;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -15,6 +12,7 @@ public class PolicyDemoController {
     private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private static Policy[] policies;
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(
             value = "/policies",
             method = RequestMethod.GET,
