@@ -12,7 +12,7 @@ public class PolicyDemoController {
     private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private static Policy[] policies;
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://demo-frontend-demo.openshift.iktech.io")
     @RequestMapping(
             value = "/policies",
             method = RequestMethod.GET,
