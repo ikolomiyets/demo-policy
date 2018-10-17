@@ -8,7 +8,7 @@ image = ""
 
 podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins',
   containers: [
-    containerTemplate(name: 'java', image: 'openjdk', ttyEnabled: true, command: 'cat'),
+    containerTemplate(name: 'java', image: 'openjdk:11', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'docker', image: 'docker:dind', ttyEnabled: true, command: 'cat', privileged: true,
         envVars: [secretEnvVar(key: 'DOCKER_USERNAME', secretName: 'ikolomiyets-docker-hub-credentials', secretKey: 'username'),
     ]),

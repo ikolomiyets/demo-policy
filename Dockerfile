@@ -1,4 +1,4 @@
-FROM openjdk
+FROM openjdk:11
 
 ARG VERSION=1.0.0
 
