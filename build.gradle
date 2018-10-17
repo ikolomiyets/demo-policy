@@ -9,7 +9,7 @@ targetCompatibility = compatibility
 group = projectGroup
 def env = System.getenv()
 def buildNumberStr = env['BUILD_NUMBER']
-version = baseVersion
+version = baseVersion + (buildNumberStr != null ? "." + buildNumberStr : "-SNAPSHOT")
 
 
 // In this section you declare where to find the dependencies of your project
@@ -21,7 +21,6 @@ repositories {
 
 jar {
     baseName = projectName
-    version = baseVersion + (buildNumberStr != null ? "." + buildNumberStr : "-SNAPSHOT")
     manifest {
         attributes 'Implementation-Title': projectDescription,
                 'Implementation-Version': jar.version
