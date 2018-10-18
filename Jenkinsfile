@@ -52,25 +52,23 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins',
             }
         }
 
-        stage('SonarQube Analysis') {
-            container('sonarqube') {
-            	lock(resource: "${projectName}-sonarqube") {
-            		stage('SonarQube Analysis') {
-            	        try {
-            			    def scannerHome = tool 'sonarqube-scanner';
-            				withSonarQubeEnv('Sonarqube') {
-            			        sh "${scannerHome}/bin/sonar-scanner"
-            			    }
-            	        } catch (error) {
-                            step([$class: 'Mailer',
-                                notifyEveryUnstableBuild: true,
-                                recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
-                                                                [$class: 'RequesterRecipientProvider']]),
-                                sendToIndividuals: true])
-            	            throw error
-            	        }
-            		}
-            	}
+        container('sonarqube') {
+            lock(resource: "${projectName}-sonarqube") {
+                stage('SonarQube Analysis') {
+                    try {
+                        def scannerHome = tool 'sonarqube-scanner';
+                        withSonarQubeEnv('Sonarqube') {
+                            sh "${scannerHome}/bin/sonar-scanner"
+                        }
+                    } catch (error) {
+                        step([$class: 'Mailer',
+                            notifyEveryUnstableBuild: true,
+                            recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
+                                                            [$class: 'RequesterRecipientProvider']]),
+                            sendToIndividuals: true])
+                        throw error
+                    }
+                }
             }
         }
 
