@@ -14,7 +14,7 @@ public class PolicyDemoController {
     private static Logger log = LoggerFactory.getLogger(PolicyDemoController.class);
     private static Policy[] policies;
 
-    @CrossOrigin(origins = "http://demo-frontend-demo.openshift.iktech.io")
+    @CrossOrigin(origins = "*")
     @RequestMapping(
             value = "/policies",
             method = RequestMethod.GET,
