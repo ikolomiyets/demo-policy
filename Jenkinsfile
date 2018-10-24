@@ -52,45 +52,43 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins',
             }
         }
 
-//        stage('SonarQube Analysis') {
-//            container('sonarqube') {
-//            	lock(resource: "${projectName}-sonarqube") {
-//            		stage('SonarQube Analysis') {
-//            	        try {
-//            			    def scannerHome = tool 'sonarqube-scanner';
-//            				withSonarQubeEnv('Sonarqube') {
-//            			        sh "${scannerHome}/bin/sonar-scanner"
-//            			    }
-//            	        } catch (error) {
-//                            step([$class: 'Mailer',
-//                                notifyEveryUnstableBuild: true,
-//                                recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
-//                                                                [$class: 'RequesterRecipientProvider']]),
-//                                sendToIndividuals: true])
-//            	            throw error
-//            	        }
-//            		}
-//            	}
-//            }
-//        }
+        container('sonarqube') {
+            lock(resource: "${projectName}-sonarqube") {
+                stage('SonarQube Analysis') {
+                    try {
+                        def scannerHome = tool 'sonarqube-scanner';
+                        withSonarQubeEnv('Sonarqube') {
+                            sh "${scannerHome}/bin/sonar-scanner"
+                        }
+                    } catch (error) {
+                        step([$class: 'Mailer',
+                            notifyEveryUnstableBuild: true,
+                            recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
+                                                            [$class: 'RequesterRecipientProvider']]),
+                            sendToIndividuals: true])
+                        throw error
+                    }
+                }
+            }
+        }
 
-//        stage("Quality Gate") {
-//	          milestone(1)
-//	          lock(resource: "${projectName}-sonarqube") {
-//                  timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
-//                    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-//                    if (qg.status != 'OK') {
-//                        step([$class: 'Mailer',
-//                            notifyEveryUnstableBuild: true,
-//                            recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
-//                                                            [$class: 'RequesterRecipientProvider']]),
-//                            sendToIndividuals: true])
-//                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-//                    }
-//                  }
-//		          milestone(2)
-//             }
-//        }
+        stage("Quality Gate") {
+	          milestone(1)
+	          lock(resource: "${projectName}-sonarqube") {
+                  timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+                    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                    if (qg.status != 'OK') {
+                        step([$class: 'Mailer',
+                            notifyEveryUnstableBuild: true,
+                            recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'],
+                                                            [$class: 'RequesterRecipientProvider']]),
+                            sendToIndividuals: true])
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    }
+                  }
+		          milestone(2)
+             }
+        }
 
         stage('Build Docker Image') {
             container('docker') {
@@ -126,10 +124,12 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins',
             milestone(4)
         }
 
-        stage('Deploy Latest') {
-            container('kubectl') {
-                sh "kubectl patch -n ${namespace} deployment ${projectName} -p '{\"spec\": { \"template\" : {\"spec\" : {\"containers\" : [{ \"name\" : \"${projectName}\", \"image\" : \"${image}\"}]}}}}'"
-                milestone(5)
+        if (env.BRANCH_NAME == "master") {
+            stage('Deploy Latest') {
+                container('kubectl') {
+                    sh "kubectl patch -n ${namespace} deployment ${projectName} -p '{\"spec\": { \"template\" : {\"spec\" : {\"containers\" : [{ \"name\" : \"${projectName}\", \"image\" : \"${image}\"}]}}}}'"
+                    milestone(5)
+                }
             }
         }
     }

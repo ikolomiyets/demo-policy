@@ -1,5 +1,7 @@
 package io.iktech.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +11,10 @@ import java.util.Arrays;
 
 @RestController
 public class PolicyDemoController {
-    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private static Logger log = LoggerFactory.getLogger(PolicyDemoController.class);
     private static Policy[] policies;
 
-    @CrossOrigin(origins = "http://demo-frontend-demo.openshift.iktech.io")
+    @CrossOrigin(origins = "*")
     @RequestMapping(
             value = "/policies",
             method = RequestMethod.GET,
@@ -31,6 +33,7 @@ public class PolicyDemoController {
 
     static {
         try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             policies = new Policy[] {
                     new Policy("IE-8A-219276", format.parse("2017-05-01"), new Long[] { 2L }),
                     new Policy("IE-8A-210117", format.parse("2017-04-17"), new Long[] { 1L, 4L }),
@@ -38,7 +41,7 @@ public class PolicyDemoController {
             };
 
         } catch(Exception e) {
-
+            log.error("Cannot create policies array", e);
         }
     }
 }
