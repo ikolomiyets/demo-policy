@@ -66,9 +66,15 @@ docker {
 // Import task types
 import com.bmuschko.gradle.docker.tasks.image.*
 
-task buildImage(type: DockerBuildImage) {
+task copyDockerFile(type: Copy) {
     dependsOn build
-    inputDir = file('.')
+    from 'Dockerfile'
+    into buildDir
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn copyDockerFile
+    inputDir = buildDir
 //    dockerFile = file('Dockerfile-dev')
     tags.add(projectName)
 }

@@ -2,7 +2,7 @@ FROM openjdk:11
 
 ARG VERSION=1.1.0-SNAPSHOT
 
-ADD build/libs/demo-policy-${VERSION}.jar /app/
+ADD libs/demo-policy-${VERSION}.jar /app/
 RUN ln -s /app/demo-policy-${VERSION}.jar /app/demo-policy.jar
 RUN ["mkdir", "/app/logs"]
 RUN useradd devops
