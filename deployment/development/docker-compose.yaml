@@ -1,0 +1,9 @@
+version: "3"
+services:
+  demo-policy:
+    container_name: demo-policy
+    image: demo-policy
+    ports:
+    - "8080:8080"
+    - "5009:5009"
+
