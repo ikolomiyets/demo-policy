@@ -68,14 +68,14 @@ import com.bmuschko.gradle.docker.tasks.image.*
 
 task copyDockerFile(type: Copy) {
     dependsOn build
-    from 'Dockerfile'
+    from 'Dockerfile-dev'
     into buildDir
 }
 
 task buildImage(type: DockerBuildImage) {
     dependsOn copyDockerFile
     inputDir = buildDir
-//    dockerFile = file('Dockerfile-dev')
+    dockerFile = new File(buildDir, 'Dockerfile-dev')
     tags.add(projectName)
 }
 

@@ -10,7 +10,7 @@ RUN useradd devops
 RUN ["chown", "-R", "devops", "/app"]
 
 USER devops
-EXPOSE 8080
+EXPOSE 8080 5009
 
-CMD ["java", "-jar", "/app/demo-policy.jar"]
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5009", "-jar", "/app/demo-policy.jar"]
 
