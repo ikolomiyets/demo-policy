@@ -106,7 +106,7 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins',
         stage('Scan Docker Image') {
             def imageLine = "${image}\n${repository}:${tag}"
             writeFile file: 'anchore_images', text: imageLine
-            anchore name: 'anchore_images'
+            anchore name: 'anchore_images' engineRetries: 1000
         }
 
         stage('Tag Source Code') {
