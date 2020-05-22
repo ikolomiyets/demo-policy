@@ -16,6 +16,7 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins',
     containerTemplate(name: 'sonarqube', image: 'iktech/sonarqube-scanner', ttyEnabled: true, command: 'cat'),
   ],
   volumes: [
+    secretVolume(secretName: 'gradle-config', mountPath: '/etc/.gradle'),
     secretVolume(mountPath: '/etc/.ssh', secretName: 'ssh-home'),
     secretVolume(secretName: 'ikolomiyets-docker-hub-credentials', mountPath: '/etc/.secret'),
     hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
@@ -37,6 +38,7 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins',
         stage('Build Java Code') {
             container('java') {
                 try {
+                    sh "mkdir -p /root/.gradle && cp /etc/.gradle/gradle.properties /root/.gradle/"
                     sh './gradlew clean build'
                 } catch (error) {
                     step([$class: 'Mailer',
@@ -99,6 +101,12 @@ podTemplate(label: 'jpod', cloud: 'OpenShift', serviceAccount: 'jenkins',
                 sh "docker push ${repository}:${tag}"
                 milestone(3)
             }
+        }
+
+        stage('Scan Docker Image') {
+            def imageLine = "${repository}:${tag}"
+            writeFile file: 'anchore_images', text: imageLine
+            anchore name: 'anchore_images'
         }
 
         stage('Tag Source Code') {
