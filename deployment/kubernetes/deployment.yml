@@ -1,11 +1,15 @@
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: kube-demo
+  namespace: demo
   name: demo-policy
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: demo-policy
+      type: deployment
   template:
     metadata:
       labels:

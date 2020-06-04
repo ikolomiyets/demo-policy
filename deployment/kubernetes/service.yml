@@ -2,7 +2,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: kube-demo
+  namespace: demo
   name: demo-policy
 spec:
   selector:
