@@ -25,6 +25,7 @@ steps:
         cd /builds/binaries/externals/
         gzip -dc /tmp/openjdk-16.0.2_linux-x64_bin.tar.gz | sudo tar xvf -
         rm /tmp/openjdk-16.0.2_linux-x64_bin.tar.gz
+        export JAVA_HOME_16_X64=/builds/binaries/externals/jdk-16.0.2
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: "16"
