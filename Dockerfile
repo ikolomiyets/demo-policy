@@ -1,4 +1,4 @@
-FROM openjdk:16.0.72-slim
+FROM openjdk:16.0.2-slim
 
 ARG VERSION=1.2.0-SNAPSHOT
 
