@@ -46,6 +46,7 @@ steps:
       tasks: 'clean build'
   - task: Docker@2
     inputs:
+        containerRegistry: $(containerRegistry)
         command: 'buildAndPush'
         Dockerfile: 'Dockerfile'
         repository: $(dockerRepository)
