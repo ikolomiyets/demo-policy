@@ -53,3 +53,11 @@ steps:
         tags: |
           $(Build.BuildNumber)
           latest
+  - task: publish-artifact@1
+    inputs:
+      apiToken: $(artifactz.apiToken)
+      stage: 'Development'
+      flow: 'Standard'
+      name: 'demo-policy'
+      type: 'DockerImage'
+      version: $(Build.BuildNumber)
