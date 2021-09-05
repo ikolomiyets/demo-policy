@@ -1,8 +1,9 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.3.0.RELEASE'
-    id "io.spring.dependency-management" version "1.0.9.RELEASE"
-    id 'com.bmuschko.docker-remote-api' version '6.4.0'
+    id 'org.springframework.boot' version '2.5.0'
+    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id 'com.bmuschko.docker-remote-api' version '7.1.0'
+    id "org.owasp.dependencycheck" version "6.3.1"
 }
 
 sourceCompatibility = compatibility
@@ -20,6 +21,7 @@ repositories {
     jcenter()
     maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
+    mavenCentral()
 }
 
 jar {
@@ -36,20 +38,18 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-devtools')
 
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-
-    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
-    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-    implementation group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0.1'
-    implementation group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.3'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+    implementation 'com.sun.xml.bind:jaxb-core:3.0.1'
+    implementation 'com.sun.xml.bind:jaxb-impl:3.0.1'
     implementation 'javax.activation:activation:1.1.1'
-    implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '2.6.0'
+    implementation 'com.microsoft.azure:applicationinsights-web:2.6.3'
 
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 //    testCompile('org.springframework.boot:spring-boot-starter-test')
 //    testCompile('org.mockito:mockito-core:2.4.6')
 //    testCompile('org.powermock:powermock-core:1.7.0RC4')

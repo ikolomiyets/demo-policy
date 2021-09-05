@@ -3,22 +3,50 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
+name: 1.2.0.$(Rev:.r)
+
 trigger:
 - master
 
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  - group: demo
+
 steps:
-- task: Gradle@2
-  inputs:
-    workingDirectory: ''
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    options: '-PdockerUrl=unix:///var/run/docker.sock -PdockerKeysDir='
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'clean build'
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "Downloading JDK 16"
+        curl -L https://download.java.net/java/GA/jdk16.0.2/d4a915d82b4c4fbb9bde534da945d746/7/GPL/openjdk-16.0.2_linux-x64_bin.tar.gz -o /tmp/openjdk-16.0.2_linux-x64_bin.tar.gz
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: "16"
+      jdkArchitectureOption: x64
+      jdkSourceOption: LocalDirectory
+      jdkFile: "/tmp/openjdk-16.0.2_linux-x64_bin.tar.gz"
+      jdkDestinationDirectory: "/builds/binaries/externals"
+      cleanDestinationDirectory: true
+  - task: Gradle@2
+    inputs:
+      workingDirectory: ''
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      options: '-PdockerUrl=unix:///var/run/docker.sock -PdockerKeysDir='
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'clean build'
+  - task: Docker@2
+    inputs:
+        containerRegistry: $(containerRegistry)
+        command: 'buildAndPush'
+        Dockerfile: 'Dockerfile'
+        repository: $(dockerRepository)
+        tags: |
+          $(Build.BuildNumber)
+          latest

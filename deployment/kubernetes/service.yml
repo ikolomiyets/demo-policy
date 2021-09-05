@@ -12,5 +12,22 @@ spec:
   - protocol: TCP
     port: 8080
     targetPort: 8080
-  type: NodePort
-
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: demo-ingress
+  namespace: demo
+spec:
+  tls:
+    - hosts:
+        - demo-policy.iktech.io
+      secretName: default-server-secret
+  rules:
+    - host: demo-policy.iktech.io
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: demo-policy
+              servicePort: 8080
