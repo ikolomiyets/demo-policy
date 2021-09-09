@@ -27,6 +27,7 @@ steps:
         rm /tmp/openjdk-16.0.2_linux-x64_bin.tar.gz
         echo $JAVA_HOME_16_X64
         echo $JAVA_HOME
+        cd /home/vsts/work/1/s
         ls -l
         ls -l deployment
         ls -l deployment/swarm
