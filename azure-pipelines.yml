@@ -61,3 +61,8 @@ steps:
       name: 'demo-policy'
       type: 'DockerImage'
       version: $(Build.BuildNumber)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: 'deployment/swarm'
+      ArtifactName: 'swarm'
+      publishLocation: 'Container'
