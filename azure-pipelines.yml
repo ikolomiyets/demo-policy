@@ -32,9 +32,6 @@ steps:
         cd /home/vsts/work/1/s
         git submodule init
         git submodule update --remote --merge
-        ls -l
-        ls -l deployment
-        ls -l deployment/swarm
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: "17"
@@ -52,13 +49,19 @@ steps:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+         cd /home/vsts/work/1/s/build/libs
+         ls -l
   - task: Docker@2
     inputs:
         containerRegistry: $(containerRegistry)
         command: 'build'
         Dockerfile: 'Dockerfile'
         repository: $(dockerRepository)
-        argments: --build-arg=VERSION=1.2.0.$(Build.BuildNumber)
+        arguments: --build-arg=VERSION=1.2.0.$(Build.BuildNumber)
         tags: |
           1.2.0.$(Build.BuildNumber)
           latest
