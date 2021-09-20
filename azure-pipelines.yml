@@ -13,6 +13,8 @@ pool:
 
 variables:
   - group: demo
+  - name: BUILD_NUMBER
+    value: $(Build.BuildNumber)
 
 steps:
   - task: Bash@3
@@ -50,8 +52,6 @@ steps:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
-    env:
-      - BUILD_NUMBER=$(Build.BuildNumber)
   - task: Docker@2
     inputs:
         containerRegistry: $(containerRegistry)
