@@ -19,13 +19,13 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        echo "Downloading JDK 16"
+        echo "Downloading JDK 17"
         sudo mkdir -p /builds/binaries/externals/
-        curl -L https://download.java.net/java/GA/jdk16.0.2/d4a915d82b4c4fbb9bde534da945d746/7/GPL/openjdk-16.0.2_linux-x64_bin.tar.gz -o /tmp/openjdk-16.0.2_linux-x64_bin.tar.gz
+        curl -L https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz -o /tmp/openjdk-17_linux-x64_bin.tar.gz
         cd /builds/binaries/externals/
-        gzip -dc /tmp/openjdk-16.0.2_linux-x64_bin.tar.gz | sudo tar xvf -
-        rm /tmp/openjdk-16.0.2_linux-x64_bin.tar.gz
-        echo $JAVA_HOME_16_X64
+        gzip -dc /tmp/openjdk-17_linux-x64_bin.tar.gz | sudo tar xvf -
+        rm /tmp/openjdk-17_linux-x64_bin.tar.gz
+        echo $JAVA_HOME_17_X64
         echo $JAVA_HOME
         cd /home/vsts/work/1/s
         git submodule init
@@ -35,7 +35,7 @@ steps:
         ls -l deployment/swarm
   - task: JavaToolInstaller@0
     inputs:
-      versionSpec: "16"
+      versionSpec: "17"
       jdkArchitectureOption: x64
       jdkSourceOption: "PreInstalled"
   - task: Gradle@2
@@ -45,7 +45,7 @@ steps:
       gradleOptions: '-Xmx3072m'
       options: '-PdockerUrl=unix:///var/run/docker.sock -PdockerKeysDir='
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '16'
+      jdkVersionOption: '17'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
