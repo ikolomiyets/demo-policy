@@ -13,6 +13,7 @@ group = projectGroup
 def env = System.getenv()
 def buildNumberStr = env['BUILD_NUMBER']
 def artifactVersion = baseVersion + (buildNumberStr != null ? "." + buildNumberStr : "-SNAPSHOT")
+version = artifactVersion
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -27,6 +28,13 @@ jar {
     manifest {
         attributes 'Implementation-Title': projectDescription,
                 'Implementation-Version': jar.archiveVersion.get()
+    }
+}
+
+configurations {
+    [apiElements, runtimeElements].each {
+        it.outgoing.artifacts.removeIf { it.buildDependencies.getDependencies(null).contains(jar) }
+        it.outgoing.artifact(bootJar)
     }
 }
 
