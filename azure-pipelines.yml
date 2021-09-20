@@ -3,7 +3,7 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-name: 1.2.0$(Rev:.r)
+name: $(Rev:r)
 
 trigger:
 - master
@@ -50,14 +50,26 @@ steps:
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'clean build'
+    env:
+      - BUILD_NUMBER=$(Build.BuildNumber)
   - task: Docker@2
     inputs:
         containerRegistry: $(containerRegistry)
-        command: 'buildAndPush'
+        command: 'build'
+        Dockerfile: 'Dockerfile'
+        repository: $(dockerRepository)
+        argments: --build-arg=VERSION=1.2.0.$(Build.BuildNumber)
+        tags: |
+          1.2.0.$(Build.BuildNumber)
+          latest
+  - task: Docker@2
+    inputs:
+        containerRegistry: $(containerRegistry)
+        command: 'push'
         Dockerfile: 'Dockerfile'
         repository: $(dockerRepository)
         tags: |
-          $(Build.BuildNumber)
+          1.2.0.$(Build.BuildNumber)
           latest
   - task: publish-artifact@1
     inputs:
@@ -66,7 +78,7 @@ steps:
       flow: 'Standard'
       name: 'demo-policy'
       type: 'DockerImage'
-      version: $(Build.BuildNumber)
+      version: 1.2.0.$(Build.BuildNumber)
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: 'deployment/swarm'
