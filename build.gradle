@@ -1,9 +1,8 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.5.4'
-    id "io.spring.dependency-management" version "1.0.11.RELEASE"
-    id 'com.bmuschko.docker-remote-api' version '7.1.0'
-    id "org.owasp.dependencycheck" version "6.3.1"
+    id 'org.springframework.boot' version '3.1.2'
+    id "io.spring.dependency-management" version "1.1.0"
+    id "org.owasp.dependencycheck" version "8.3.1"
 }
 
 sourceCompatibility = compatibility
@@ -43,43 +42,11 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-devtools')
 
-    implementation 'org.slf4j:slf4j-api:1.7.32'
-    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
-    implementation 'com.sun.xml.bind:jaxb-core:3.0.1'
-    implementation 'com.sun.xml.bind:jaxb-impl:3.0.1'
-    implementation 'javax.activation:activation:1.1.1'
-    implementation 'com.microsoft.azure:applicationinsights-web:2.6.3'
-
-    // Declare the dependency for your favourite test framework you want to use in your tests.
-    // TestNG is also supported by the Gradle Test task. Just change the
-    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
-    // 'test.useTestNG()' to your build script.
-    testImplementation 'junit:junit:4.13.2'
-//    testCompile('org.springframework.boot:spring-boot-starter-test')
-//    testCompile('org.mockito:mockito-core:2.4.6')
-//    testCompile('org.powermock:powermock-core:1.7.0RC4')
-//    testCompile('org.powermock:powermock-module-junit4:1.7.0RC4')
-//    testCompile('org.powermock:powermock-api-mockito:1.7.0RC4')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-docker {
-    url = dockerUrl
-    certPath = new File(System.properties['user.home'], dockerKeysDir)
-}
-
-// Import task types
-import com.bmuschko.gradle.docker.tasks.image.*
-
-task copyDockerFile(type: Copy) {
+task buildDevImage(type: Exec) {
     dependsOn build
-    from 'Dockerfile-dev'
-    into buildDir
-}
-
-task buildImage(type: DockerBuildImage) {
-    dependsOn copyDockerFile
-    inputDir = buildDir
-    dockerFile = new File(buildDir, 'Dockerfile-dev')
-    images.add(projectName)
+    commandLine 'docker', 'build', '--progress', 'plain', '--build-arg', "VERSION=${artifactVersion}", '-t', 'demo-policy', '.'
 }
 

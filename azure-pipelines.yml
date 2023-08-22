@@ -61,9 +61,9 @@ steps:
         command: 'build'
         Dockerfile: 'Dockerfile'
         repository: $(dockerRepository)
-        arguments: --build-arg=VERSION=1.2.0.$(Build.BuildNumber)
+        arguments: --build-arg=VERSION=1.3.0.$(Build.BuildNumber)
         tags: |
-          1.2.0.$(Build.BuildNumber)
+          1.3.0.$(Build.BuildNumber)
           latest
   - task: Docker@2
     inputs:
@@ -72,7 +72,7 @@ steps:
         Dockerfile: 'Dockerfile'
         repository: $(dockerRepository)
         tags: |
-          1.2.0.$(Build.BuildNumber)
+          1.3.0.$(Build.BuildNumber)
           latest
   - task: publish-artifact@1
     inputs:
@@ -81,7 +81,7 @@ steps:
       flow: 'Standard'
       name: 'demo-policy'
       type: 'DockerImage'
-      version: 1.2.0.$(Build.BuildNumber)
+      version: 1.3.0.$(Build.BuildNumber)
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: 'deployment/swarm'
