@@ -60,7 +60,7 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-         cd /home/vsts/work/1/s/build/libs
+         cd $(Pipeline.Workspace)/s/build/libs
          ls -l
   - task: Docker@2
     inputs:
@@ -91,6 +91,6 @@ steps:
       version: $(baseVersion).$(Build.BuildNumber)
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Pipeline.Workspace)/demo-policy/deployment/swarm'
+      targetPath: '$(Pipeline.Workspace)/s/deployment/swarm'
       artifactName: 'swarm'
       version: $(baseVersion).$(Build.BuildNumber)
