@@ -91,6 +91,6 @@ steps:
       version: $(baseVersion).$(Build.BuildNumber)
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Pipeline.Workspace)/deployment/swarm'
+      targetPath: '$(Pipeline.Workspace)/demo-policy/deployment/swarm'
       artifactName: 'swarm'
       version: $(baseVersion).$(Build.BuildNumber)
