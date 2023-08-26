@@ -40,8 +40,7 @@ steps:
       echo "Building application version $(baseVersion).$(Build.BuildNumber)"
     displayName: 'Checking the build number'
   - script: |
-      newBuildNumber="$(baseVersion).$(Build.BuildNumber)"
-      echo "##vso[task.updatebuildnumber]$newBuildNumber"
+      echo "##vso[build.updatebuildnumber]$(baseVersion).$(Build.BuildNumber)"
     displayName: 'Update build number'
   - task: JavaToolInstaller@0
     inputs:
