@@ -35,7 +35,7 @@ steps:
   - script: |
       BASE_VERSION=$(cat gradle.properties|grep baseVersion|sed 's/baseVersion=//g')
       echo $BASE_VERSION
-      echo '##vso[task.setvariable variable=baseVersion;]'$BASE_VERSION
+      echo "##vso[task.setvariable variable=baseVersion;]1.3.0"
       echo "Building application version $(baseVersion).$(Build.BuildNumber)"
     displayName: 'Setting a baseVersion variable'
   - task: JavaToolInstaller@0
