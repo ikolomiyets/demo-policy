@@ -32,9 +32,6 @@ steps:
         cd /home/vsts/work/1/s
         git submodule init
         git submodule update --remote --merge
-        echo "##vso[task.updatebuildnumber]$(baseVersion).$(Build.BuildNumber)"
-#  - script: |
-#    displayName: 'Update build number'
   - script: |
       BASE_VERSION=$(cat gradle.properties|grep baseVersion|sed 's/baseVersion=//g')
       echo "##vso[task.setvariable variable=baseVersion;]$BASE_VERSION"
@@ -42,6 +39,9 @@ steps:
   - script: |
       echo "Building application version $(baseVersion).$(Build.BuildNumber)"
     displayName: 'Checking the build number'
+  - script: |
+      echo "##vso[task.updatebuildnumber]$(baseVersion).$(Build.BuildNumber)"
+    displayName: 'Update build number'
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: "17"
