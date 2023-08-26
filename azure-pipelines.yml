@@ -36,12 +36,6 @@ steps:
       BASE_VERSION=$(cat gradle.properties|grep baseVersion|sed 's/baseVersion=//g')
       echo "##vso[task.setvariable variable=baseVersion;]$BASE_VERSION"
     displayName: 'Setting a baseVersion variable'
-  - script: |
-      echo "Building application version $(baseVersion).$(Build.BuildNumber)"
-    displayName: 'Checking the build number'
-  - script: |
-      echo "##vso[build.updatebuildnumber]$(baseVersion).$(Build.BuildNumber)"
-    displayName: 'Update build number'
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: "17"
@@ -91,3 +85,6 @@ steps:
       targetPath: '$(Pipeline.Workspace)/s/deployment/swarm'
       artifactName: 'swarm'
       version: $(baseVersion).$(Build.BuildNumber)
+  - script: |
+      echo "##vso[build.updatebuildnumber]$(baseVersion).$(Build.BuildNumber)"
+    displayName: 'Update build number'
